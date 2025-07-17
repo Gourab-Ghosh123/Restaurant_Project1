@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="Burger, Restaurant, Food Delivery, Fast Food, Feane" />
+  <meta name="description" content="Feane - Delicious burgers delivered fresh. View our menu, book tables, and enjoy great food." />
+  <meta name="author" content="Feane Team" />
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/png">
+
+  <title>Feane</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+  <!-- owl slider stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <!-- nice select -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
+  <!-- font awesome style -->
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+  <!-- custom styles -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+</head>
+
+<body {% block class %}{% endblock class %}>
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="{% static 'images/hero-bg.jpg' %}" alt="Hero background">
+    </div>
+
+    <!-- Header -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="{% url 'home' %}"></a>
+            <span>Burgger</span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+              <li class="nav-item {% block home_status %}{% endblock home_status %}">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item {% block menu_status %}{% endblock menu_status %}">
+                <a class="nav-link" href="{% url 'Menu' %}">Menu</a>
+              </li>
+              <li class="nav-item {% block about_status %}{% endblock about_status %}">
+                <a class="nav-link" href="{% url 'About' %}">About</a>
+              </li>
+              <li class="nav-item {% block table_status %}{% endblock table_status %}">
+                <a class="nav-link" href="{% url 'Book_Table' %}">Book Table</a>
+              </li>
+              <li class="nav-item {% block feedback_status %}{% endblock feedback_status %}">
+                <a class="nav-link" href="{% url 'Feedback_Form' %}">Feedback</a>
+              </li>
+            </ul>
+
+            <div class="user_option">
+              {% if user.is_authenticated %}
+                <span style="background-color: #f8c6c6; color: #000; padding: 5px 10px; border-radius: 5px; font-weight: bold;">
+                  {{ user.first_name|default:user.username }}
+                </span>
+                <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+                <button id="cart-button" class="btn btn-primary">
+                  <i class="fa fa-shopping-cart"></i> Cart
+                </button>
+              {% else %}
+                <a href="{% url 'login' %}" class="btn order_online">Login</a>
+              {% endif %}
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Your Cart</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul id="cart-items-list"></ul>
+            <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
+          </div>
+          <div class="modal-footer">
+            <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% block slider %}{% endblock slider %}
+  </div>
+
+  {% block main %}{% endblock main %}
+
+  <!-- Footer -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 footer-col">
+          <div class="footer_contact">
+            <h4>Contact Us</h4>
+            <div class="contact_link_box">
+              <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i><span>Location</span></a>
+              <a href="#"><i class="fa fa-phone" aria-hidden="true"></i><span>Call +01 1234567890</span></a>
+              <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i><span>info@feane.com</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 footer-col">
+          <div class="footer_detail">
+            <a href="#" class="footer-logo">Feane</a>
+            <p>Making this the first true generator on the Internet. Uses a dictionary of over 200 Latin words.</p>
+            <div class="footer_social">
+              <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 footer-col">
+          <h4>Opening Hours</h4>
+          <p>Everyday</p>
+          <p>10:00 AM - 10:00 PM</p>
+        </div>
+      </div>
+      <div class="footer-info">
+        <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved By
+          <a href="https://html.design/">Free Html Templates</a><br><br>
+          &copy; <span id="displayYear"></span> Distributed By
+          <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <!-- Scripts -->
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+
+  <script>
+    document.getElementById('cart-button')?.addEventListener('click', function () {
+      fetch('/get-cart-items/')
+        .then(response => response.json())
+        .then(data => {
+          const cartList = document.getElementById('cart-items-list');
+          const cartTotal = document.getElementById('cart-total');
+          let total = 0;
+          cartList.innerHTML = '';
+          if (data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+              total += parseFloat(item.total);
+              cartList.innerHTML += `<li>${item.name} - ${item.quantity} x $${item.price} = $${item.total}</li>`;
+            });
+          } else {
+            cartList.innerHTML = '<li>Your cart is empty.</li>';
+          }
+          cartTotal.textContent = total.toFixed(2);
+          $('#cart-modal').modal('show');
+        })
+        .catch(error => console.error('Error fetching cart items:', error));
+    });
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>
